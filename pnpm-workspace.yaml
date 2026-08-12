@@ -1,0 +1,5 @@
+allowBuilds:
+  esbuild: true
+minimumReleaseAgeExclude:
+  - storybook-builder-rsbuild@3.4.1
+  - storybook-react-rsbuild@3.4.1
