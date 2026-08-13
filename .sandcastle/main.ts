@@ -21,9 +21,9 @@
 // Or add to package.json:
 //   "scripts": { "sandcastle": "npx tsx .sandcastle/main.ts" }
 
-import * as sandcastle from "@ai-hero/sandcastle";
-import { docker } from "@ai-hero/sandcastle/sandboxes/docker";
-import { z } from "zod";
+import * as sandcastle from '@ai-hero/sandcastle';
+import { docker } from '@ai-hero/sandcastle/sandboxes/docker';
+import { z } from 'zod';
 
 // The planner emits its plan as JSON inside <plan> tags; Output.object extracts
 // and validates it against this schema. We use Zod here, but any Standard
@@ -46,13 +46,13 @@ const MAX_ITERATIONS = 10;
 // Hooks run inside the sandbox before the agent starts each iteration.
 // npm install ensures the sandbox always has fresh dependencies.
 const hooks = {
-  sandbox: { onSandboxReady: [{ command: "npm install" }] },
+  sandbox: { onSandboxReady: [{ command: 'npm install' }] },
 };
 
 // Copy node_modules from the host into the worktree before each sandbox
 // starts. Avoids a full npm install from scratch; the hook above handles
 // platform-specific binaries and any packages added since the last copy.
-const copyToWorktree = ["node_modules"];
+const copyToWorktree = ['node_modules'];
 
 // ---------------------------------------------------------------------------
 // Main loop
@@ -73,24 +73,24 @@ for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
   const plan = await sandcastle.run({
     hooks,
     sandbox: docker(),
-    name: "planner",
+    name: 'planner',
     // One iteration is enough: the planner just needs to read and reason,
     // not write code. (Structured output requires maxIterations: 1.)
     maxIterations: 1,
     // Opus for planning: dependency analysis benefits from deeper reasoning.
-    agent: sandcastle.pi("claude-sonnet-4-6"),
-    promptFile: "./.sandcastle/plan-prompt.md",
+    agent: sandcastle.pi('claude-sonnet-4-6'),
+    promptFile: './.sandcastle/plan-prompt.md',
     // Extract and validate the <plan> JSON into a typed object. Throws
     // StructuredOutputError if the tag is missing, the JSON is malformed, or
     // validation fails — which aborts the loop.
-    output: sandcastle.Output.object({ tag: "plan", schema: planSchema }),
+    output: sandcastle.Output.object({ tag: 'plan', schema: planSchema }),
   });
 
   const issues = plan.output.issues;
 
   if (issues.length === 0) {
     // No unblocked work — either everything is done or everything is blocked.
-    console.log("No unblocked issues to work on. Exiting.");
+    console.log('No unblocked issues to work on. Exiting.');
     break;
   }
 
@@ -123,10 +123,10 @@ for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
       try {
         // Run the implementer
         const implement = await sandbox.run({
-          name: "implementer",
+          name: 'implementer',
           maxIterations: 100,
-          agent: sandcastle.pi("claude-sonnet-4-6"),
-          promptFile: "./.sandcastle/implement-prompt.md",
+          agent: sandcastle.pi('claude-sonnet-4-6'),
+          promptFile: './.sandcastle/implement-prompt.md',
           promptArgs: {
             TASK_ID: issue.id,
             ISSUE_TITLE: issue.title,
@@ -137,10 +137,10 @@ for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
         // Only review if the implementer produced commits
         if (implement.commits.length > 0) {
           const review = await sandbox.run({
-            name: "reviewer",
+            name: 'reviewer',
             maxIterations: 1,
-            agent: sandcastle.pi("claude-sonnet-4-6"),
-            promptFile: "./.sandcastle/review-prompt.md",
+            agent: sandcastle.pi('claude-sonnet-4-6'),
+            promptFile: './.sandcastle/review-prompt.md',
             promptArgs: {
               BRANCH: issue.branch,
             },
@@ -168,8 +168,10 @@ for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
       continue;
     }
 
-    if (outcome.status === "rejected") {
-      console.error(`  ✗ ${issue.id} (${issue.branch}) failed: ${outcome.reason}`);
+    if (outcome.status === 'rejected') {
+      console.error(
+        `  ✗ ${issue.id} (${issue.branch}) failed: ${outcome.reason}`,
+      );
     }
   }
 
@@ -181,7 +183,7 @@ for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
       return [];
     }
 
-    if (outcome.status === "fulfilled" && outcome.value.commits.length > 0) {
+    if (outcome.status === 'fulfilled' && outcome.value.commits.length > 0) {
       return [issue];
     }
 
@@ -199,7 +201,7 @@ for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
 
   if (completedBranches.length === 0) {
     // All agents ran but none made commits — nothing to merge this cycle.
-    console.log("No commits produced. Nothing to merge.");
+    console.log('No commits produced. Nothing to merge.');
     continue;
   }
 
@@ -215,19 +217,19 @@ for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
   await sandcastle.run({
     hooks,
     sandbox: docker(),
-    name: "merger",
+    name: 'merger',
     maxIterations: 1,
-    agent: sandcastle.pi("claude-sonnet-4-6"),
-    promptFile: "./.sandcastle/merge-prompt.md",
+    agent: sandcastle.pi('claude-sonnet-4-6'),
+    promptFile: './.sandcastle/merge-prompt.md',
     promptArgs: {
       // A markdown list of branch names, one per line.
-      BRANCHES: completedBranches.map((b) => `- ${b}`).join("\n"),
+      BRANCHES: completedBranches.map((b) => `- ${b}`).join('\n'),
       // A markdown list of issue IDs and titles, one per line.
-      ISSUES: completedIssues.map((i) => `- ${i.id}: ${i.title}`).join("\n"),
+      ISSUES: completedIssues.map((i) => `- ${i.id}: ${i.title}`).join('\n'),
     },
   });
 
-  console.log("\nBranches merged.");
+  console.log('\nBranches merged.');
 }
 
-console.log("\nAll done.");
+console.log('\nAll done.');
