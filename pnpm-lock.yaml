@@ -225,10 +225,10 @@ importers:
         version: 2.1.0(@rsbuild/core@2.1.10)(@rspack/core@2.1.8(@swc/helpers@0.5.23))
       '@rstest/adapter-rsbuild':
         specifier: ^0.11.5
-        version: 0.11.6(@rsbuild/core@2.1.10)(@rstest/core@0.11.6(happy-dom@20.11.1))
+        version: 0.11.6(@rsbuild/core@2.1.10)(@rstest/core@0.11.6(happy-dom@20.11.2))
       '@rstest/core':
         specifier: ^0.11.5
-        version: 0.11.6(happy-dom@20.11.1)
+        version: 0.11.6(happy-dom@20.11.2)
       '@storybook/addon-docs':
         specifier: 10.5.6
         version: 10.5.6(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(storybook@10.5.6(@types/react@19.2.18)(react@19.2.8))(webpack@5.109.2(clean-css@5.3.3)(esbuild@0.28.1)(html-minifier-terser@7.2.0))
@@ -254,8 +254,8 @@ importers:
         specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       happy-dom:
-        specifier: ^20.11.1
-        version: 20.11.1
+        specifier: ^20.11.2
+        version: 20.11.2
       storybook:
         specifier: 10.5.6
         version: 10.5.6(@types/react@19.2.18)(react@19.2.8)
@@ -1759,8 +1759,8 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
-  happy-dom@20.11.1:
-    resolution: {integrity: sha512-XSt8tMzbW9ymE7687xztkO1ckR7qJNQ3LywY9vlYGhGi3zXrGBHuUo2Cl1ztZaICW+1eAGdkLbj6iwVqDT33kg==}
+  happy-dom@20.11.2:
+    resolution: {integrity: sha512-7MB+bJLkxu3SowAfBJbjW+c55kNz5tkR45gu2qzrxznezhLeN5YIlJbwUgSzlGc+qWoZ8Ykg71H5ezz69xixrw==}
     engines: {node: '>=20.0.0'}
 
   has-flag@4.0.0:
@@ -2429,6 +2429,18 @@ packages:
 
   ws@8.21.2:
     resolution: {integrity: sha512-54dMVAo4WIe6SKy3vBgN+9bJZqqQ8IMRevAkOLQALhi49qkkQDQfWdAZ8KQlXiEabw88ARXXdUrlvtbKQX+aKw==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
+  ws@8.21.3:
+    resolution: {integrity: sha512-201TZ/kPWxoPr/OKWjquZR1SWKXcvxdH+e1xrx89b3YbmzLMFCLfnaG1HFIgWzJOEWZ7MvpK++odZufgYR50Rw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -3128,17 +3140,17 @@ snapshots:
     optionalDependencies:
       '@rspack/core': 2.1.8(@swc/helpers@0.5.23)
 
-  '@rstest/adapter-rsbuild@0.11.6(@rsbuild/core@2.1.10)(@rstest/core@0.11.6(happy-dom@20.11.1))':
+  '@rstest/adapter-rsbuild@0.11.6(@rsbuild/core@2.1.10)(@rstest/core@0.11.6(happy-dom@20.11.2))':
     dependencies:
       '@rsbuild/core': 2.1.10
-      '@rstest/core': 0.11.6(happy-dom@20.11.1)
+      '@rstest/core': 0.11.6(happy-dom@20.11.2)
 
-  '@rstest/core@0.11.6(happy-dom@20.11.1)':
+  '@rstest/core@0.11.6(happy-dom@20.11.2)':
     dependencies:
       '@rsbuild/core': 2.1.10
       '@types/chai': 5.2.3
     optionalDependencies:
-      happy-dom: 20.11.1
+      happy-dom: 20.11.2
     transitivePeerDependencies:
       - '@module-federation/runtime-tools'
       - core-js
@@ -3819,7 +3831,7 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
-  happy-dom@20.11.1:
+  happy-dom@20.11.2:
     dependencies:
       '@types/node': 24.13.3
       '@types/whatwg-mimetype': 3.0.2
@@ -3827,7 +3839,7 @@ snapshots:
       buffer-image-size: 0.6.4
       entities: 7.0.1
       whatwg-mimetype: 3.0.0
-      ws: 8.21.2
+      ws: 8.21.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -4559,6 +4571,8 @@ snapshots:
   wrappy@1.0.2: {}
 
   ws@8.21.2: {}
+
+  ws@8.21.3: {}
 
   wsl-utils@0.1.0:
     dependencies:
