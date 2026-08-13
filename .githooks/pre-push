@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+echo "Running feedback loop checks..."
+pnpm run feedback:loop

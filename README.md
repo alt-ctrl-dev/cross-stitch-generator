@@ -22,10 +22,26 @@ Build the app for production:
 pnpm run build
 ```
 
+Run local feedback-loop checks (same checks as PR flow):
+
+```bash
+pnpm run feedback:loop
+```
+
 Preview the production build locally:
 
 ```bash
 pnpm run preview
+```
+
+## Git hooks
+
+Pre-push hook runs `pnpm run feedback:loop` automatically.
+
+If hooks are not active locally, run:
+
+```bash
+git config core.hooksPath .githooks
 ```
 
 ## Learn more
